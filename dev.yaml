@@ -1,0 +1,1076 @@
+coreImage:
+  registry: docker.io
+  repository: bitnami/harbor-core
+  tag: 2.0.1-debian-10-r8
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+portalImage:
+  registry: docker.io
+  repository: bitnami/harbor-portal
+  tag: 2.0.1-debian-10-r10
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+jobserviceImage:
+  registry: docker.io
+  repository: bitnami/harbor-jobservice
+  tag: 2.0.1-debian-10-r8
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+chartMuseumImage:
+  registry: docker.io
+  repository: bitnami/chartmuseum
+  tag: 0.12.0-debian-10-r100
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+registryImage:
+  registry: docker.io
+  repository: bitnami/harbor-registry
+  tag: 2.0.1-debian-10-r9
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+registryctlImage:
+  registry: docker.io
+  repository: bitnami/harbor-registryctl
+  tag: 2.0.1-debian-10-r8
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+trivyImage:
+  registry: docker.io
+  repository: bitnami/harbor-adapter-trivy
+  tag: 2.0.1-debian-10-r9
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+clairImage:
+  registry: docker.io
+  repository: bitnami/harbor-clair
+  tag: 2.0.1-debian-10-r8
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+clairAdapterImage:
+  registry: docker.io
+  repository: bitnami/harbor-adapter-clair
+  tag: 2.0.1-debian-10-r8
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+notaryServerImage:
+  registry: docker.io
+  repository: bitnami/harbor-notary-server
+  tag: 2.0.1-debian-10-r8
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+notarySignerImage:
+  registry: docker.io
+  repository: bitnami/harbor-notary-signer
+  tag: 2.0.1-debian-10-r8
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+nginxImage:
+  registry: docker.io
+  repository: bitnami/nginx
+  tag: 1.19.1-debian-10-r1
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+  debug: false
+
+nameOverride:
+
+fullnameOverride:
+
+volumePermissions:
+  enabled: false
+  image:
+    registry: docker.io
+    repository: bitnami/minideb
+    tag: buster
+    pullPolicy: Always
+    pullSecrets: []
+  resources:
+    limits: {}
+    requests: {}
+
+internalTLS:
+  enabled: false
+
+service:
+  type: LoadBalancer
+  tls:
+    enabled: true
+    existingSecret: ""
+    notaryExistingSecret: ""
+    commonName: "harbor-ocp-harbor.apps.us-ocp.ocp.hhesham.com"
+  ports:
+    http: 80
+    https: 443
+    notary: 4443
+  nodePorts:
+    http:
+    https:
+    notary:
+  loadBalancerIP:
+  annotations: {}
+  loadBalancerSourceRanges: []
+  externalTrafficPolicy:
+
+ingress:
+  enabled: true 
+  hosts:
+    core: harbor-ocp-harbor.apps.us-ocp.ocp.hhesham.com 
+    notary: notary-ocp-harbor.apps.us-ocp.ocp.hhesham.com
+  controller: default
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+
+externalURL: https://harbor-ocp-harbor.apps.us-ocp.ocp.hhesham.com
+
+containerSecurityContext:
+  runAsUser: 1000630000
+  runAsNonRoot: true
+
+podSecurityContext:
+  fsGroup: 1000630000
+
+persistence:
+  enabled: true
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    registry:
+      existingClaim: ""
+      storageClass: ""
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 5Gi
+    jobservice:
+      existingClaim: ""
+      storageClass: ""
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi
+    chartmuseum:
+      existingClaim: ""
+      storageClass: ""
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 5Gi
+    trivy:
+      storageClass: ""
+      accessMode: ReadWriteOnce
+      size: 5Gi
+
+  imageChartStorage:
+    caBundleSecretName:
+    disableredirect: false
+    type: filesystem
+    filesystem:
+      rootdirectory: /storage
+      maxthreads:
+    azure:
+      accountname: accountname
+      accountkey: base64encodedaccountkey
+      container: containername
+      storagePrefix: /azure/harbor/charts
+      realm:
+    gcs:
+      bucket: bucketname
+      encodedkey: base64-encoded-json-key-file
+      rootdirectory:
+      chunksize:
+    s3:
+      region: us-west-1
+      bucket: bucketname
+      accesskey:
+      secretkey:
+      regionendpoint:
+      encrypt:
+      keyid:
+      secure:
+      v4auth:
+      chunksize:
+      rootdirectory:
+      storageclass:
+      sse:
+    swift:
+      authurl: https://storage.myprovider.com/v3/auth
+      username:
+      password:
+      container:
+      region:
+      tenant:
+      tenantid:
+      domain:
+      domainid:
+      trustid:
+      insecureskipverify:
+      chunksize:
+      prefix:
+      secretkey:
+      accesskey:
+      authversion:
+      endpointtype:
+      tempurlcontainerkey:
+      tempurlmethods:
+    oss:
+      accesskeyid:
+      accesskeysecret:
+      region:
+      bucket:
+      endpoint:
+      internal:
+      encrypt:
+      secure:
+      chunksize:
+      rootdirectory:
+      secretkey:
+
+logLevel: debug
+
+forcePassword: false
+
+harborAdminPassword: "admin"
+
+
+proxy:
+  httpProxy: ""
+  httpsProxy: ""
+  noProxy: 127.0.0.1,localhost,.local,.internal
+  components:
+    - core
+    - jobservice
+    - clair
+
+nginx:
+  command:
+  args:
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  customLivenessProbe: {}
+
+  customReadinessProbe: {}
+
+  extraEnvVars: []
+
+  extraEnvVarsCM:
+
+  extraEnvVarsSecret:
+
+  extraVolumes: []
+
+  extraVolumeMounts: []
+
+  initContainers: []
+
+  sidecars: []
+  resources:
+    limits: {}
+    requests: {}
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  podLabels: {}
+  podAnnotations: {}
+  behindReverseProxy: false
+  lifecycleHooks:
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+
+portal:
+  command:
+  args:
+
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  tls:
+    existingSecret:
+
+  lifecycleHooks:
+
+  customLivenessProbe: {}
+
+  customReadinessProbe: {}
+
+  extraEnvVars: []
+
+  extraEnvVarsCM:
+
+  extraEnvVarsSecret:
+
+  extraVolumes: []
+
+  extraVolumeMounts: []
+
+  initContainers: []
+
+  sidecars: []
+
+  resources:
+    limits: {}
+    requests: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podLabels: {}
+
+  podAnnotations: {}
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+
+core:
+  command:
+  args:
+
+  uaaSecretName:
+
+  secretKey:
+
+  updateStrategy:
+    type: RollingUpdate
+
+  replicas: 1
+
+  tls:
+    existingSecret:
+
+  customLivenessProbe: {}
+
+  customReadinessProbe: {}
+
+  extraEnvVars: []
+
+  extraEnvVarsCM:
+
+  extraEnvVarsSecret:
+
+  extraVolumes: []
+
+  extraVolumeMounts: []
+
+  initContainers: []
+
+  sidecars: []
+
+  resources:
+    limits: {}
+    requests: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podLabels: {}
+
+  podAnnotations: {}
+
+  secret: ""
+  secretName: ""
+  csrfKey: ""
+  lifecycleHooks:
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+
+jobservice:
+  command:
+  args:
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  maxJobWorkers: 10
+  jobLogger: file
+
+  tls:
+    existingSecret:
+
+  lifecycleHooks:
+
+  customLivenessProbe: {}
+
+  customReadinessProbe: {}
+
+  extraEnvVars: []
+
+  extraEnvVarsCM:
+
+  extraEnvVarsSecret:
+
+  extraVolumes: []
+
+  extraVolumeMounts: []
+
+  initContainers: []
+
+  sidecars: []
+
+  resources:
+    limits: {}
+    requests: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podLabels: {}
+
+  podAnnotations: {}
+
+  secret: ""
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+
+registry:
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  tls:
+    existingSecret:
+
+  server:
+    command:
+    args:
+    extraEnvVars: []
+
+    extraEnvVarsCM:
+
+    extraEnvVarsSecret:
+
+    extraVolumeMounts: []
+
+    lifecycleHooks:
+
+    resources:
+      limits: {}
+      requests: {}
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+
+    customLivenessProbe: {}
+
+    customReadinessProbe: {}
+
+  controller:
+    command:
+    args:
+    extraEnvVars: []
+
+    extraEnvVarsCM:
+
+    extraEnvVarsSecret:
+
+    extraVolumeMounts: []
+
+    lifecycleHooks:
+
+    resources:
+      limits: {}
+      requests: {}
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+
+    customLivenessProbe: {}
+
+    customReadinessProbe: {}
+
+  extraVolumes: []
+
+  initContainers: []
+
+  sidecars: []
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podLabels: {}
+
+  podAnnotations: {}
+
+  secret: ""
+  relativeurls: false
+  credentials:
+    username: "harbor_registry_user"
+    password: "harbor_registry_password"
+    htpasswd: "harbor_registry_user:$2y$10$9L4Tc0DJbFFMB6RdSCunrOpTHdwhid4ktBJmLD00bYgqkkGOvll3m"
+
+  middleware:
+    enabled: false
+    type: cloudFront
+    cloudFront:
+      baseurl: example.cloudfront.net
+      keypairid: KEYPAIRID
+      duration: 3000s
+      ipfilteredby: none
+      privateKeySecret: "my-secret"
+
+chartmuseum:
+  enabled: true
+  command:
+  args:
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  useRedisCache: true
+
+  absoluteUrl: false
+  chartRepoName: "chartsRepo"
+
+  depth: 1
+  logJson: false
+  disableMetrics: false
+  disableApi: false
+  disableStatefiles: false
+  allowOverwrite: true
+  anonymousGet: false
+
+  tls:
+    existingSecret:
+
+  contextPath:
+  indexLimit:
+  chartPostFormFieldName:
+  provPostFormFieldName:
+  maxStorageObjects:
+  maxUploadSize:
+
+  lifecycleHooks:
+
+  customLivenessProbe: {}
+
+  customReadinessProbe: {}
+
+  extraEnvVars: []
+
+  extraEnvVarsCM:
+
+  extraEnvVarsSecret:
+
+  extraVolumes: []
+
+  extraVolumeMounts: []
+
+  initContainers: []
+
+  sidecars: []
+
+  resources:
+    limits: {}
+    requests: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podLabels: {}
+
+  podAnnotations: {}
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 20
+    failureThreshold: 10
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 20
+    failureThreshold: 10
+    successThreshold: 1
+
+clair:
+  enabled: true
+
+  replicas: 1
+
+  tls:
+    existingSecret:
+
+  updateStrategy:
+    type: RollingUpdate
+
+  httpProxy:
+  httpsProxy:
+
+  updatersInterval: 12
+
+  adapter:
+    command:
+    args:
+    extraEnvVars: []
+
+    extraEnvVarsCM:
+
+    extraEnvVarsSecret:
+
+    extraVolumeMounts: []
+
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+
+    lifecycleHooks:
+
+    customLivenessProbe: {}
+
+    customReadinessProbe: {}
+
+    resources:
+      limits: {}
+      requests: {}
+
+  server:
+    command:
+    args:
+
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+
+    lifecycleHooks:
+
+    customLivenessProbe: {}
+
+    customReadinessProbe: {}
+
+    extraEnvVars: []
+
+    extraEnvVarsCM:
+
+    extraEnvVarsSecret:
+
+    extraVolumeMounts: []
+
+    resources:
+      limits: {}
+      requests: {}
+
+  extraVolumes: []
+
+  initContainers: []
+
+  sidecars: []
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podLabels: {}
+
+  podAnnotations: {}
+
+trivy:
+  enabled: true
+  replicas: 1
+
+  command:
+  args:
+
+  tls:
+    existingSecret:
+
+  updateStrategy:
+    type: RollingUpdate
+  debugMode: false
+  vulnType: "os,library"
+  automountServiceAccountToken: false
+  severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+  ignoreUnfixed: false
+  insecure: false
+  gitHubToken: ""
+  skipUpdate: false
+  cacheDir: "/bitnami/harbor-adapter-trivy/.cache"
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+
+  extraEnvVars: []
+
+  extraEnvVarsCM:
+
+  extraEnvVarsSecret:
+
+  extraVolumes: []
+
+  extraVolumeMounts: []
+
+  initContainers: []
+
+  sidecars: []
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+
+  lifecycleHooks:
+
+  customLivenessProbe: {}
+
+  customReadinessProbe: {}
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podLabels: {}
+
+  podAnnotations: {}
+
+notary:
+  enabled: true
+  server:
+    command:
+    args:
+    replicas: 1
+    updateStrategy:
+      type: RollingUpdate
+    extraEnvVars: []
+
+    extraEnvVarsCM:
+
+    extraEnvVarsSecret:
+
+    extraVolumeMounts: []
+
+    lifecycleHooks:
+
+    resources:
+      limits: {}
+      requests: {}
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+
+    customLivenessProbe: {}
+
+    customReadinessProbe: {}
+
+    extraVolumes: []
+
+    initContainers: []
+
+    sidecars: []
+
+    nodeSelector: {}
+
+    tolerations: []
+
+    affinity: {}
+
+    podLabels: {}
+
+    podAnnotations: {}
+
+  signer:
+    command:
+    args:
+    replicas: 1
+    updateStrategy:
+      type: RollingUpdate
+    extraEnvVars: []
+
+    extraEnvVarsCM:
+
+    extraEnvVarsSecret:
+
+    extraVolumeMounts: []
+
+    resources:
+      limits: {}
+      requests: {}
+    extraVolumes: []
+
+    initContainers: []
+
+    sidecars: []
+
+    nodeSelector: {}
+
+    tolerations: []
+
+    affinity: {}
+
+    podLabels: {}
+
+    podAnnotations: {}
+
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+
+    lifecycleHooks:
+
+    customLivenessProbe: {}
+
+    customReadinessProbe: {}
+
+  secretName: ""
+
+commonAnnotations: {}
+
+commonLabels: {}
+
+redis:
+  enabled: true
+  nameOverride:
+  securityContext:
+    enabled: true
+    fsGroup: 1000630000
+    runAsUser: 1000630000
+  usePassword: false
+  cluster:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+  slave:
+    persistence:
+      enabled: true
+
+externalRedis:
+  host: localhost
+  port: 6379
+  password: ""
+  jobserviceDatabaseIndex: "1"
+  registryDatabaseIndex: "2"
+  chartmuseumDatabaseIndex: "3"
+  clairAdapterDatabaseIndex: "4"
+  trivyAdapterDatabaseIndex: "5"
+
+postgresql:
+  enabled: true
+  nameOverride:
+  postgresqlUsername: postgres
+  postgresqlPassword: not-secure-database-password
+  securityContext:
+    enabled: true
+    fsGroup: 1000630000
+    runAsUser: 1000630000
+  replication:
+    enabled: false
+  persistence:
+    enabled: true
+  initdbScripts:
+    initial-notaryserver.sql: |
+      CREATE DATABASE notaryserver;
+      CREATE USER server;
+      alter user server with encrypted password 'password';
+      GRANT ALL PRIVILEGES ON DATABASE notaryserver TO server;
+    initial-notarysigner.sql: |
+      CREATE DATABASE notarysigner;
+      CREATE USER signer;
+      alter user signer with encrypted password 'password';
+      GRANT ALL PRIVILEGES ON DATABASE notarysigner TO signer;
+    initial-registry.sql: |
+      CREATE DATABASE registry ENCODING 'UTF8';
+      \c registry;
+      CREATE TABLE schema_migrations(version bigint not null primary key, dirty boolean not null);
+
+externalDatabase:
+  host: localhost
+  user: bn_harbor
+  password: ""
+  port: 5432
+  sslmode:
+  coreDatabase:
+  clairDatabase:
+  clairUsername:
+  clairPassword:
+  notaryServerDatabase:
+  notaryServerUsername:
+  notaryServerPassword:
+  notarySignerDatabase:
+  notarySignerUsername:
+  notarySignerPassword:
+
+extraDeploy: []
